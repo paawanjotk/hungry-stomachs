@@ -29,11 +29,10 @@ App.post("/sign-up", UserController.createUser);
 App.post("/sign-in", UserController.LoginUserByEmail);
 
 const main = async () => {
-  await mongoose
-    .connect("mongodb://localhost:27017/hungry-stomachs")
-    .then(() => {
-      console.log("Connected to DB");
-    });
+  console.log({ connection_string: process.env.MONGO_DB_URL });
+  await mongoose.connect(process.env.MONGO_DB_URL).then(() => {
+    console.log("Connected to DB");
+  });
 };
 
 main()

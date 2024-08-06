@@ -1,14 +1,14 @@
+import { config } from "dotenv";
+config();
 import mongoose from "mongoose";
 import CategoriesModel from "./models/categories.models.js";
 import seedFile from "./seed.json" assert { type: "json" };
 import ProductModel from "./models/products.models.js";
 
 const main = async () => {
-  await mongoose
-    .connect("mongodb://localhost:27017/hungry-stomachs")
-    .then(() => {
-      console.log("Connected to DB");
-    });
+  await mongoose.connect(process.env.MONGO_DB_URL).then(() => {
+    console.log("Connected to DB");
+  });
   console.log("Seeding categories");
   for (const category of seedFile.categories) {
     console.log(`Seeding category ${category.name}`);
