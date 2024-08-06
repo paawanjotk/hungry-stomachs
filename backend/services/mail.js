@@ -1,16 +1,6 @@
 import nodemailer from "nodemailer";
 
 // Create a transporter object using SMTP transport
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER, // your Gmail account
-    pass: process.env.EMAIL_PASS,
-    clientId: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    refreshToken: process.env.GOOGLE_REFRESH_TOKEN
-  },
-});
 
 // Email options
 const mailOptions = {
@@ -26,6 +16,17 @@ const mailOptions = {
 };
 
 export const sendMail = async ({ orderId, name, email }) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER, // your Gmail account
+      pass: process.env.EMAIL_PASS,
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+      type: "OAuth2",
+    },
+  });
   const res = new Promise((respect, disrespect) => {
     transporter.sendMail(
       {
