@@ -1,0 +1,116 @@
+{
+    "categories": [
+      {
+        "imageUrl": "https://drive.google.com/uc?export=view&id=19A2sMvWCHbzSGlB1I7cjR9u6DXDuTSoT",
+        "name": "Donuts",
+        "description": "A variety of delicious chocolate-covered donuts."
+      },
+      {
+        "imageUrl": "https://drive.google.com/uc?export=view&id=1hvPL5VxQBWUzsVuFHj1SzwYYrF6m5GLF" ,
+        
+        "name": "Chocolate bars",
+        "description": "A selection of rich and creamy chocolate bars."
+      },
+      {
+        "imageUrl":  "https://drive.google.com/uc?export=view&id=1s97scpLSV0_oPbwvOoxGIoVIHbfyOnT1",
+        "name": "Bitey-chocolates",
+        "description": "Medium sized delicious chocolates for a snack."
+      },
+      {
+        "imageUrl":  "https://drive.google.com/uc?export=view&id=122GrJeRZJkBJqIqlef-pMidi8USDvqbo",
+        "name": "Truffles",
+        "description": "Luxurious chocolate truffles in a variety of flavors."
+      },
+      {
+        "imageUrl":  "https://drive.google.com/uc?export=view&id=1QMq8HrueclAo9u18w751vLfOacPEtdYt",
+        "name": "Rakhi Special Chocolates",
+        "description": "Specially crafted chocolates for Rakhi celebrations."
+      },
+      {
+        "imageUrl":  "https://drive.google.com/uc?export=view&id=1vj6rghEt4EFYMFo1xmPMYLJoFq7AC25b",
+        "name": "Chocolate Hampers",
+        "description": "Beautifully packaged hampers filled with assorted chocolates."
+      }
+    ],
+    "products": [
+        {
+            "imageUrl": "https://example.com/donut1.jpg",
+            "name": "Chocolate Donut",
+            "price": 60,
+            "description" : "Milk chocolate donut with crisp coco base.",
+            "categoryname": "Donuts"
+        },
+        {
+            "imageUrl": "https://example.com/donut2.jpg",
+            "name" : "White Chocolate Donut",
+            "price": 70,
+            "description" : "White chocolate donut with a hint of vanilla.",
+            "categoryname": "Donuts"
+        },
+        {
+            "imageUrl": "https://example.com/donut3.jpg",
+            "name" : "Midnight Donut",
+            "price": 70,
+            "description": "Milk and white chocolate donut with crisp coco base.",
+            "categoryname": "Donuts"
+        },
+        {
+            "imageUrl": "https://example.com/chocolatebar1.jpg",
+            "name": "Designer Bar",
+            "price": 100,
+            "description": "Rich milk chocolate bar with a designer pattern.",
+            "categoryname": "Chocolate bars"
+        },
+        {
+            "imageUrl": "https://example.com/chocolatebar2.jpg",
+            "name": "Dark Chocolate Bar",
+            "price": 70,
+            "description": "Premium dark chocolate bar",
+            "categoryname": "Chocolate bars"
+        },
+        {
+            "imageUrl": "https://example.com/chocolatebar3.jpg",
+            "name": "Rasmalai White Chocolate Bar",
+            "price": 90,
+            "description": "White chocolate bar with rasmalai flavor.",
+            "categoryname": "Chocolate bars"
+        },
+        {
+            "imageUrl": "https://example.com/chocolatebar3.jpg",
+            "name": "Granola Bar",
+            "price": 90,
+            "description": "Dark/Milk granola nuts chocolate bar.",
+            "categoryname": "Chocolate bars"
+        },
+        {
+            "imageUrl": "https://example.com/chocolatecaketruffles1.jpg",
+            "name": "Box of 6 Chocolate Cake Truffles",
+            "price": 230,
+            "description": "Rich chocolate cake truffles packaged nicely (recommended for gifting).",
+            "categoryname": "Truffles"
+        },
+        {
+            "imageUrl": "https://example.com/chocolatecaketruffles2.jpg",
+            "name": "Box of 12 Chocolate Cake Truffles",
+            "price": 450,
+            "description": "Rich chocolate cake truffles packaged nicely (recommended for gifting).",
+            "categoryname": "Truffles"
+        },
+        {
+            "imageUrl": "https://example.com/whitecaketruffles.jpg",
+            "name": "Box of 6 White Chocolate Cake Truffles",
+            "price": 250,
+            "description": "Rich chocolate cake truffles (recommended for gifting).",
+            "categoryname": "Truffles"
+        },
+        {
+            "imageUrl": "https://example.com/whitecaketruffles.jpg",
+            "name": "Box of 12 White Chocolate Cake Truffles",
+            "price": 480,
+            "description": "Rich White chocolate cake truffles (recommended for gifting).",
+            "categoryname": "Truffles"
+        }
+    ]
+    
+  }
+   

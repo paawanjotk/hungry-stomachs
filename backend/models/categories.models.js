@@ -2,7 +2,8 @@ import { Schema, model } from "mongoose";
 import { CATEGORY_MODEL_NAME } from "../constants/models.js";
 
 const categorySchema = new Schema({
-  name: String,
+  imageUrl: String,
+  name: { type: String, unique: true },
   description: String,
 });
 
@@ -25,6 +26,12 @@ const CategoriesModel = {
   },
   createCategory: async (category) => {
     return await Category.create(category);
+  },
+  getById: async (id) => {
+    return await Category.findById(id);
+  },
+  findOne: async (query) => {
+    return await Category.findOne(query);
   },
 };
 

@@ -8,5 +8,4 @@ const CategoriesController = {
     res.json({ result: await CategoriesModel.createCategory(req.body) });
   },
 };
-
 export default CategoriesController;

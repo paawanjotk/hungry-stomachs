@@ -1,40 +1,18 @@
-import { Schema, get, model } from "mongoose";
+import { Schema, model } from "mongoose";
 import {
   CATEGORY_MODEL_NAME,
   PRODUCT_MODEL_NAME,
 } from "../constants/models.js";
 
 const productSchema = new Schema({
-  name: String,
+  imageUrl: String,
+  name: { type: String, unique: true },
   price: Number,
   description: String,
   category: { type: Schema.Types.ObjectId, ref: CATEGORY_MODEL_NAME },
 });
 
 const Product = model(PRODUCT_MODEL_NAME, productSchema);
-
-const products = [
-  {
-    id: 1,
-    categoryId: 1,
-    name: "Chocolate donut",
-  },
-  {
-    id: 2,
-    categoryId: 1,
-    name: "Midnight donut",
-  },
-  {
-    id: 3,
-    categoryId: 1,
-    name: "White donut",
-  },
-  {
-    id: 4,
-    categoryId: 2,
-    name: "Chocolate truffle",
-  },
-];
 
 const ProductModel = {
   getAll: async () => {
@@ -53,8 +31,11 @@ const ProductModel = {
     return await Product.create(product);
   },
   updateByIdProduct: async (id, product) => {
-    await Product.findByIdAndUpdate(id, product);
+    return await Product.findByIdAndUpdate(id, product);
   },
+  findOne : async(query) => {
+    return await Product.findOne(query);
+  }
 };
 // tu gay hay
 /**

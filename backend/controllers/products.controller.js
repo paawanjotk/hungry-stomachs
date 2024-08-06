@@ -1,19 +1,28 @@
 import productModel from "../models/products.models.js";
+import categoryModel from "../models/categories.models.js";
+
 const ProductController = {
-  getAll: (req, res) => {
-    if (req.query.categoryId == undefined) {
-      return res.json({
-        result: productModel.getAll(),
-      });
+  getAll: async (req, res) => {
+    const result = {};
+    try {
+      if (req.query.categoryId == undefined) {
+        result.products = await productModel.getAll();
+      } else {
+        result.products = await productModel.getAllByCategory(
+          req.query.categoryId
+        );
+        result.category = await categoryModel.getById(req.query.categoryId);
+      }
+    } catch (e) {
+      console.log(e);
+      return res.sendStatus(500);
     }
-    return res.json({
-      result: productModel.getAllByCategory(req.query.categoryId),
-    });
+
+    return res.json({ result });
   },
-  getById: (req, res) => {
-    console.log(req.params);
+  getById: async (req, res) => {
     return res.json({
-      result: productModel.getById(req.params.id),
+      result: await productModel.getById(req.params.id),
     });
   },
   createProduct: async (req, res) => {
@@ -21,9 +30,9 @@ const ProductController = {
       result: await productModel.createProduct(req.body),
     });
   },
-  updateProduct: (req, res) => {
+  updateProduct: async (req, res) => {
     return res.json({
-      result: productModel.updateByIdProduct(
+      result: await productModel.updateByIdProduct(
         req.body.productId,
         re.body.product
       ),
