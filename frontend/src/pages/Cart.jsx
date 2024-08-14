@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import ProductGrid from "../components/ProductGrid";
 import { useSelector } from "react-redux";
 import { getProductsById } from "../http/products";
 import ProductCartButtons from "../components/ProductCartButtons";
 import { createOrder } from "../http/orders";
+import { setLocalCart } from "../storage";
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.products);
@@ -34,6 +34,7 @@ const Cart = () => {
       const cart = { items: cartItems, name, email, address, ph: phone };
       const res = await createOrder(cart);
       alert("Order Id: " + res._id);
+      setLocalCart([]);
       window.location.href = "/ ";
     } catch (e) {
       alert("Error while placing the order");
@@ -111,8 +112,8 @@ const Cart = () => {
                     Name:
                   </label>
                   <input
-                  placeholder="Rachel"
-                  className="rounded-md p-2 text-black" 
+                    placeholder="Rachel"
+                    className="rounded-md p-2 text-black"
                     value={name}
                     onChange={(e) => {
                       setName(e.target.value);
@@ -126,8 +127,8 @@ const Cart = () => {
                 <div className="flex flex-col">
                   <label htmlFor="email">Email:</label>
                   <input
-                  placeholder="babygirl@gmail.com"
-                  className="rounded-md p-2 text-black"
+                    placeholder="babygirl@gmail.com"
+                    className="rounded-md p-2 text-black"
                     value={email}
                     onChange={(e) => {
                       setEmail(e.target.value);
@@ -141,8 +142,8 @@ const Cart = () => {
                 <div className="flex flex-col">
                   <label htmlFor="address">Address:</label>
                   <input
-                  placeholder="In your heart"
-                  className="rounded-md p-2 text-black"
+                    placeholder="In your heart"
+                    className="rounded-md p-2 text-black"
                     value={address}
                     onChange={(e) => {
                       setAddress(e.target.value);
@@ -156,8 +157,8 @@ const Cart = () => {
                 <div className="flex flex-col">
                   <label htmlFor="phone">Phone:</label>
                   <input
-                  placeholder="1234567890"
-                  className="rounded-md p-2 text-black"
+                    placeholder="1234567890"
+                    className="rounded-md p-2 text-black"
                     value={phone}
                     onChange={(e) => {
                       setPhone(e.target.value);

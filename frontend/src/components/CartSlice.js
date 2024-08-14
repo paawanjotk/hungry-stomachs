@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getLocalCart, setLocalCart } from "../storage";
 export const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    products: [],
+    products: getLocalCart(),
   },
   reducers: {
     addProduct: (state, action) => {
@@ -12,6 +13,7 @@ export const cartSlice = createSlice({
       );
       if (prodIdx === -1) state.products.push({ _id: productId, quantity: 1 });
       else state.products[prodIdx].quantity += 1;
+      setLocalCart(state.products);
     },
     removeProduct: (state, action) => {
       const productId = action.payload;
@@ -23,6 +25,7 @@ export const cartSlice = createSlice({
         if (state.products[prodIdx].quantity === 0)
           state.products.splice(prodIdx, 1);
       }
+      setLocalCart(state.products);
     },
   },
 });
