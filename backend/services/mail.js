@@ -38,7 +38,7 @@ export const sendMail = async ({ orderId, name, email }) => {
       },
       (error, info) => {
         if (error) {
-          disrespect(error);
+          return disrespect(error);
         }
         respect(info);
       }

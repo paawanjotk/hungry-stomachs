@@ -28,11 +28,16 @@ const OrderController = {
       name: req.body.name,
       email: req.body.email,
     });
-    await sendMail({
-      orderId: response._id,
-      email: req.body.email,
-      name: req.body.name,
-    });
+    try {
+      await sendMail({
+        orderId: response._id,
+        email: req.body.email,
+        name: req.body.name,
+      });
+    } catch (e) {
+      console.error(e);
+      return res.sendStatus(500);
+    }
     return res.json({
       result: response,
     });
