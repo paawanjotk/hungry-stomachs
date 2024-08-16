@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 import { CATEGORY_MODEL_NAME } from "../constants/models.js";
 
 const categorySchema = new Schema({
-  imageUrl: String,
+  imgUrl: String,
   name: { type: String, unique: true },
   description: String,
 });

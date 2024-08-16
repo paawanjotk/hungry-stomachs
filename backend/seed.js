@@ -39,7 +39,7 @@ const main = async () => {
       continue;
     }
     await ProductModel.createProduct({
-      imageUrl: product.imageUrl,
+      imgUrl: product.imgUrl,
       name: product.name,
       price: product.price,
       description: product.description,

@@ -5,7 +5,7 @@ import {
 } from "../constants/models.js";
 
 const productSchema = new Schema({
-  imageUrl: String,
+  imgUrl: String,
   name: { type: String, unique: true },
   price: Number,
   description: String,
@@ -33,9 +33,9 @@ const ProductModel = {
   updateByIdProduct: async (id, product) => {
     return await Product.findByIdAndUpdate(id, product);
   },
-  findOne : async(query) => {
+  findOne: async (query) => {
     return await Product.findOne(query);
-  }
+  },
 };
 // tu gay hay
 /**

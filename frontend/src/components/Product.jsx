@@ -3,7 +3,7 @@ import ProductCartButtons from "./ProductCartButtons";
 const Product = ({ imgUrl, name, description, price, _id }) => {
   return (
     <div className="flex gap-10 bg-secondary text-darkBrand p-4 rounded-lg shadow-md">
-      <img className="w-2/6 rounded-md" src={imgUrl} alt="chocolate" />
+      <img className="w-[200px] rounded-md" src={imgUrl} alt="chocolate" />
 
       <div className="flex justify-between flex-col items-start">
         <div className="flex flex-col gap-7 items-start">
