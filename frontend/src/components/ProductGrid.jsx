@@ -4,7 +4,7 @@ import Product from "./Product";
 const ProductGrid = ({ products }) => {
   return (
     <div>
-      <div className="grid grid-cols-3 gap-10">
+      <div className="grid grid-cols-3 gap-6">
         {products.map((product) => {
           return <Product {...product} />;
         })}

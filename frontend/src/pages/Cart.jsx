@@ -4,6 +4,7 @@ import { getProductsById } from "../http/products";
 import ProductCartButtons from "../components/ProductCartButtons";
 import { createOrder } from "../http/orders";
 import { setLocalCart } from "../storage";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.products);
@@ -12,11 +13,9 @@ const Cart = () => {
   const [error, setError] = useState(undefined);
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [currTotal, setCurrTotal] = useState(0);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
-
+  const navigate = useNavigate();
   const calcTotal = () => {
     let total = 0;
     for (let i = 0; i < fetchedItems.length; i++) {
@@ -31,11 +30,12 @@ const Cart = () => {
     if (isSubmitLoading) return;
     try {
       setIsSubmitLoading(true);
-      const cart = { items: cartItems, name, email, address, ph: phone };
-      const res = await createOrder(cart);
+      const cart = { items: cartItems, address, ph: phone };
+      const res = await createOrder(cart, localStorage.getItem("token"));
       alert("Order Id: " + res._id);
       setLocalCart([]);
-      window.location.href = "/ ";
+      const newUrl = `/order-placed/${res._id}`;
+      window.location.replace(newUrl);
     } catch (e) {
       alert("Error while placing the order");
     } finally {
@@ -81,13 +81,15 @@ const Cart = () => {
           <div className="flex flex-col gap-5 p-8">
             {fetchedItems.map((item, idx) => (
               <div className="flex gap-5 bg-secondary text-darkBrand p-4 rounded-lg border-2 border-black">
-                <img
-                  className="w-1/6 rounded-md"
-                  src={item.imgUrl}
-                  alt="chocolate"
-                />
+                <div className="relative w-[150px] rounded-lg bg-gray-200 overflow-hidden">
+                  <img
+                    src={item.imgUrl}
+                    alt="chocolate"
+                    className="absolute top-0 left-0 w-full h-full object-cover"
+                  />
+                </div>
                 <div className="flex flex-col gap-7 items-start">
-                  <p className="  font-extrabold text-6xl">{item.name}</p>
+                  <p className="  font-extrabold text-3xl">{item.name}</p>
                   <p className="  ">{item.description}</p>
                   <p className=" ">₹ {item.price}</p>
                 </div>
@@ -107,38 +109,6 @@ const Cart = () => {
                 className="flex flex-col border-2 p-8 text-white rounded-md text-xl gap-4 bg-darkBrand"
                 onSubmit={onSubmit}
               >
-                <div className="flex flex-col">
-                  <label className="" htmlFor="name">
-                    Name:
-                  </label>
-                  <input
-                    placeholder="Rachel"
-                    className="rounded-md p-2 text-black"
-                    value={name}
-                    onChange={(e) => {
-                      setName(e.target.value);
-                    }}
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label htmlFor="email">Email:</label>
-                  <input
-                    placeholder="babygirl@gmail.com"
-                    className="rounded-md p-2 text-black"
-                    value={email}
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }}
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                  />
-                </div>
                 <div className="flex flex-col">
                   <label htmlFor="address">Address:</label>
                   <input

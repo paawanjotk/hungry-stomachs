@@ -1,5 +1,10 @@
 import { Schema, model } from "mongoose";
-import { ORDERITEM_MODEL_NAME, ORDER_MODEL_NAME } from "../constants/models.js";
+import {
+  ORDERITEM_MODEL_NAME,
+  ORDER_MODEL_NAME,
+  PRODUCT_MODEL_NAME,
+  USER_MODEL_NAME,
+} from "../constants/models.js";
 
 const orderSchema = new Schema({
   ph: String,
@@ -13,21 +18,38 @@ const orderSchema = new Schema({
     enum: ["pending", "confirmed", "in-transit", "completed"],
     default: "pending",
   },
-});
+  user: { type: Schema.Types.ObjectId, ref: USER_MODEL_NAME },
+}, { timestamps: true });
 
 const Order = model(ORDER_MODEL_NAME, orderSchema);
 
 const OrderModel = {
   getById: async (id) => {
-    const order = await Order.findById(id);
+    const order = await Order.findById(id).populate({
+      path: "orderItems",
+      populate: {
+        path: "product",
+        model: PRODUCT_MODEL_NAME,
+      },
+    });
     return order;
   },
-
   createOrder: async (order) => {
     return await Order.create(order);
   },
-  updateByIdOrder: async (id, order) => {
-    await Order.findByIdAndUpdate(id, order);
+
+  getOrders: async (query) => {
+    const orders = await Order.find(query)
+      .populate({
+        path: 'orderItems',
+        populate: {
+          path: 'product',
+          model: PRODUCT_MODEL_NAME
+        }
+      })
+      .exec();
+    console.log(orders);
+    return orders;
   },
 };
 

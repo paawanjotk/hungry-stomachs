@@ -9,17 +9,24 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Categories from "./pages/Categories";
 import CategoryProducts from "./pages/CategoryProducts";
 import Cart from "./pages/Cart";
-import Navbar from "./components/Navbar";
 import BaseLayout from "./Layouts/BaseLayout";
 import TrackOrder from "./pages/TrackOrder";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import AuthWrapper from "./wrappers/AuthWrapper";
+import Orders from "./pages/Orders";
+import {  LoggedInProtectedRoute, LoggedOutProtectedRoute } from "./components/ProtectedRoute";
+import ThankYou from "./pages/ThankYou";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const router = createBrowserRouter([
   {
     element: (
-      <BaseLayout>
-        <Outlet />
-      </BaseLayout>
+      <AuthWrapper>
+        <BaseLayout>
+          <Outlet />
+        </BaseLayout>
+      </AuthWrapper>
     ),
     children: [
       {
@@ -36,11 +43,29 @@ const router = createBrowserRouter([
       },
       {
         path: "/cart",
-        element: <Cart />,
+        element: <LoggedInProtectedRoute><Cart/></LoggedInProtectedRoute>,
       },
       {
         path: "/track",
-        element : <TrackOrder/>
+        element: <TrackOrder />,
+      },
+      {
+        path: "/login",
+        element: <LoggedOutProtectedRoute><Login /></LoggedOutProtectedRoute>,
+
+
+      },
+      {
+        path: "/signup",
+        element: <LoggedOutProtectedRoute><Signup /></LoggedOutProtectedRoute>,
+      },
+      {
+        path: "/orders",
+        element: <LoggedInProtectedRoute><Orders/></LoggedInProtectedRoute> 
+      },
+      {
+        path: "/order-placed/:orderId",
+        element: <LoggedInProtectedRoute><ThankYou  /></LoggedInProtectedRoute>
       }
     ],
   },

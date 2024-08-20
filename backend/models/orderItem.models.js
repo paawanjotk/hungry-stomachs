@@ -5,9 +5,9 @@ import {
 import { Schema, model } from "mongoose";
 
 const orderItemSchema = new Schema({
-  product: { type: Schema.Types.ObjectId, PRODUCT_MODEL_NAME },
+  product: { type: Schema.Types.ObjectId, ref: PRODUCT_MODEL_NAME },
   quantity: Number,
-});
+}, { timestamps: true });
 
 const OrderItem = model(ORDERITEM_MODEL_NAME, orderItemSchema);
 

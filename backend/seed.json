@@ -49,7 +49,7 @@
             "categoryname": "Donuts"
         },
         {
-            "imgUrl": "https://i.pinimg.com/564x/75/27/57/752757fd06f324a2568e87ddcd2c4581.jpg",
+            "imgUrl": "https://i.pinimg.com/736x/38/38/29/3838295d6f68d42808004844166c4d34.jpg",
             "name" : "White and Dark/Milk Chocolate Donut (Box of 4)",
             "price": 280,
             "description" : "Decorated 2 White and 2 Dark/Milk chocolate donuts.",
@@ -105,66 +105,59 @@
           "categoryname": "Chocolate bars"
         },
         {
-            "imgUrl": "https://example.com/chocolatecaketruffles1.jpg",
+            "imgUrl": "https://i.pinimg.com/564x/12/20/ff/1220ff14d0e4303233250f52ce06c6f9.jpg",
             "name": "Chocolate Cake Truffles (Box of 6)",
             "price": 230,
             "description": "Rich chocolate cake truffles packaged beautifully (recommended for gifting).",
             "categoryname": "Truffles"
         },
         {
-            "imgUrl": "https://example.com/chocolatecaketruffles2.jpg",
+            "imgUrl": "https://i.pinimg.com/564x/12/20/ff/1220ff14d0e4303233250f52ce06c6f9.jpg",
             "name": "Chocolate Cake Truffles(Box of 12)",
             "price": 450,
             "description": "Rich chocolate cake truffles packaged beautifully (recommended for gifting).",
             "categoryname": "Truffles"
         },
         {
-            "imgUrl": "https://example.com/whitecaketruffles.jpg",
+            "imgUrl": "https://i.pinimg.com/564x/6d/f7/4d/6df74d3365934ec01ba76b7a5bcf61ef.jpg",
             "name": "White and Dark/Milk Chocolate Cake Truffles(Box of 6)",
             "price": 250,
             "description": "Rich 3 white and 3 dark/milk chocolate cake truffles (recommended for gifting).",
             "categoryname": "Truffles"
         },
         {
-            "imgUrl": "https://example.com/whitecaketruffles.jpg",
+            "imgUrl": "https://i.pinimg.com/564x/6d/f7/4d/6df74d3365934ec01ba76b7a5bcf61ef.jpg",
             "name": "White and Dark Chocolate Cake Truffles(Box of 12)",
             "price": 499,
             "description": "Rich 5 white and 7 dark/milk chocolate cake truffles (recommended for gifting).",
             "categoryname": "Truffles"
         },
         {
-            "imgUrl": "https://example.com/bitey.jpg",
+            "imgUrl": "https://i.pinimg.com/564x/f2/e0/06/f2e00607e68b7b57dc10a12462d60bd9.jpg",
             "name" : "Oreo Pinata Hearts (6)",
             "price": 99,
             "description" : "6 delicious dark chocolate oreo pinata hearts",
             "categoryname": "Bitey-chocolates"
         },
         {
-            "imgUrl": "https://example.com/bitey.jpg",
+            "imgUrl": "https://i.pinimg.com/564x/64/b6/2b/64b62b7f349be586c6bb5cc48e9e6192.jpg",
             "name" : "Butterscotch BonBons (6)",
             "price": 89,
             "description" : "6 yummy butterscotch flavored BonBons.",
             "categoryname": "Bitey-chocolates"
         },
         {
-            "imgUrl": "https://example.com/bitey.jpg",
+            "imgUrl": "https://www.greenfusephotos.com/img/pixel.gif",
             "name" : "Hazelnut Hearts (6)",
             "price": 139,
             "description" : "6 rich hazelnut hearts.",
             "categoryname": "Bitey-chocolates"
         },
         {
-            "imgUrl": "https://example.com/bitey.jpg",
+            "imgUrl": "https://i.pinimg.com/736x/5d/ca/7a/5dca7a90aa493c0ea18397f93700c96c.jpg",
             "name" : "Dryfruit assorted chocolates (6)",
             "price": 119,
             "description" : "6 addictive dryfruit hearts and squares.",
-            "categoryname": "Bitey-chocolates"
-        },
-        {
-            "imgUrl": "https://example.com/bitey.jpg",
-            "name" : "Butterscotch BonBons (6)",
-            "price": 99,
-            "description" : "6 yummy butterscotch flavored BonBons.",
             "categoryname": "Bitey-chocolates"
         },
         {
@@ -183,8 +176,8 @@
         },
         {
           "imgUrl": "https://example.com/bitey.jpg",
-          "name" : "Assorted flavored chocolates (Box/Jar of 15)",
-          "price": 249,
+          "name" : "Teddy of Assorted flavored chocolates (18)",
+          "price": 299,
           "description" : "15 premium and addictive multi-flavored (dryfruit, hazelnut, oreo, rasmalai and butterscotch) chocolates (recommended for gifting on birthdays and anniversaries.",
           "categoryname": "Chocolate Hampers"
         },

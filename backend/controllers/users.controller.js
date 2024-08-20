@@ -1,37 +1,122 @@
 import UserModel from "../models/users.models.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
+const generateJwt = (user) => {
+  const secret = process.env.SECRET_KEY;
+  const payload = { email: user.email };
+  return jwt.sign(payload, secret, { expiresIn: "1h" });
+};
+export const authenticateJwt = (req, res, next) => {
+  const secret = process.env.SECRET_KEY;
+  const authHeader = req.headers.authorization;
+
+  if (authHeader) {
+    const token = authHeader.split(" ")[1];
+    jwt.verify(token, secret, async (err, user) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+
+      const existingUser = await UserModel.getByEmail(user.email);
+      if (!existingUser) {
+        return res.sendStatus(403);
+      }
+      req.user = existingUser;
+      next();
+    });
+  } else {
+    res.sendStatus(401);
+  }
+};
 const UserController = {
-    createUser : async(req, res) =>{
-        const userExists = await UserModel.getByEmail(req.body.email)
-        if(userExists) return res.json("User already exists.")
-        const salt  = await bcrypt.genSalt(10);
-        const hashPass = await bcrypt.hash(req.body.password, salt);
-        req.body.password = hashPass;
-        return res.json({
-            result : await UserModel.createUser(req.body),
-        })
-    },
-    LoginUserByEmail : async(req, res)=>{
-        const user = await UserModel.getByEmail(req.body.email)
-        if(!user) {
-            res.send({
-                success:false,
-                message:"User does not exist, please register"
-            })
-        }
-        const validPass = await bcrypt.compare(req.body.password, user.password)
-        if(!validPass){
-            return res.send({
-                success:false,
-                message: 'Invalid password'
-            })
-        }
-        res.send({
-            success: true,
-            message: 'User has been logged in successfully'
-        })
-    }
+  createUser: async (req, res) => {
+    const { name, email, password } = req.body;
+    try {
+      const userExists = await UserModel.getByEmail(email);
 
-}
-export default UserController
+      if (userExists)
+        return res
+          .status(403)
+          .json({ success: false, message: "User already exists." });
+
+      const salt = await bcrypt.genSalt(10);
+      const hashPass = await bcrypt.hash(password, salt);
+      req.body.password = hashPass;
+
+      const user = await UserModel.createUser(req.body);
+
+      const token = generateJwt(user);
+      return res.status(201).json({
+        success: true,
+        result: user,
+        message: "User has been created successfully",
+        token: token,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
+  },
+
+  loginUser: async (req, res) => {
+    const { email, password } = req.body;
+    try {
+      const user = await UserModel.getByEmail(email);
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User does not exist, please register",
+        });
+      }
+      const validPass = await bcrypt.compare(password, user.password);
+      if (!validPass) {
+        return res.status(404).json({
+          success: false,
+          message: "Invalid password",
+        });
+      }
+      const token = generateJwt(user);
+      return res.json({
+        result: user,
+        success: true,
+        message: "User logged in successfully",
+        token: token,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
+  },
+  getUser: async (req, res) => {
+    return res.status(200).json({
+      result: req.user,
+    });
+  },
+};
+export default UserController;
+
+/**
+ * 
+ * const response = await login() // api
+ * 
+ * if(response.status == 201) localSToarge.set(respons.token)
+ * 
+ * 
+ * fecthc("http://localhost:8000/sign-in", {
+ * method: "POST",
+ * headers: {
+ * "Content-Type": "application/json",
+      "Authorization": `Bearer ${localStorage.getItem("token")}`,
+* }
+ * 
+ * 
+ * 
+ * 
+ * 
+ */

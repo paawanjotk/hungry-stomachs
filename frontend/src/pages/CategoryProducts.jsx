@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ProductGrid from "../components/ProductGrid";
 import { getProductsByCategoryId } from "../http/products";
-import { useSelector } from "react-redux";
 
 const CategoryProducts = () => {
   let categoryId = useParams().id;

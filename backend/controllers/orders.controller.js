@@ -15,7 +15,7 @@ const OrderController = {
   createOrder: async (req, res) => {
     const orderItems = await OrderItemModel.createMany(req.body.items);
 
-    let total_price = 0;
+    let total_price = 0; 
     for (const element of req.body.items) {
       const prod = await ProductModel.getById(element._id);
       total_price += prod.price * element.quantity;
@@ -27,12 +27,13 @@ const OrderController = {
       orderItems: orderItems.map((item) => item._id),
       name: req.body.name,
       email: req.body.email,
+      user: req.user._id,
     });
     try {
       await sendMail({
         orderId: response._id,
-        email: req.body.email,
-        name: req.body.name,
+        email: req.user.email,
+        name: req.user.name,
       });
     } catch (e) {
       console.error(e);
@@ -41,11 +42,15 @@ const OrderController = {
     return res.json({
       result: response,
     });
-  },
-  updateOrder: async (req, res) => {
-    return res.json({
-      result: await orderModel.updateByIdOrder(req.body.orderId, re.body.order),
-    });
+  },  
+  getOrders: async (req, res) => {
+    try {
+      return res.json({
+        result: await orderModel.getOrders({ user: req.user._id }),
+      });
+    } catch (error) {
+      return res.sendStatus(500);
+    }
   },
 };
 export default OrderController;
