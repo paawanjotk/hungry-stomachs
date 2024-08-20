@@ -17,7 +17,7 @@ const Signup = () => {
     try {
       const res = await signupUser({ name, email, password });
       if (res.data.success) {
-        alert("Signup successful. Please login to continue.");
+        alert("Signup successful. You can browse our products and order.");
         localStorage.setItem("token", res.data.token);
         window.location.href = "/";
       } else {
