@@ -15,11 +15,14 @@ const Cart = () => {
   const [error, setError] = useState(undefined);
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [currTotal, setCurrTotal] = useState(0);
-  const [address, setAddress] = useState(user.address);
-  const [phone, setPhone] = useState(user.phone);
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
   const navigate = useNavigate();
-
+  if(user){
+    setAddress(user.address);
+    setPhone(user.phone);
+  }
   const calcTotal = () => {
     let total = 0;
     for (let i = 0; i < fetchedItems.length; i++) {
