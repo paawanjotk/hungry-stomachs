@@ -27,12 +27,14 @@ App.post("/products", ProductController.createProduct);
 App.put("/products", ProductController.updateProduct);
 
 App.post("/orders", authenticateJwt, OrderController.createOrder);
-App.get("/orders/:id", OrderController.getById);
+App.get("/orders/bestsellers", OrderController.getBestSellers);
 App.get("/orders/", authenticateJwt, OrderController.getOrders);
+App.get("/orders/:id", OrderController.getById);
 
 App.post("/sign-up", UserController.createUser);
 App.post("/sign-in", UserController.loginUser);
 App.get("/user", authenticateJwt, UserController.getUser);
+App.put("/user", authenticateJwt, UserController.updateUser);
 
 const main = async () => {
   console.log({ connection_string: process.env.MONGO_DB_URL });

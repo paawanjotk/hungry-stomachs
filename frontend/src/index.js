@@ -15,8 +15,12 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import AuthWrapper from "./wrappers/AuthWrapper";
 import Orders from "./pages/Orders";
-import {  LoggedInProtectedRoute, LoggedOutProtectedRoute } from "./components/ProtectedRoute";
+import {
+  LoggedInProtectedRoute,
+  LoggedOutProtectedRoute,
+} from "./components/ProtectedRoute";
 import ThankYou from "./pages/ThankYou";
+import Profile from "./pages/Profile";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const router = createBrowserRouter([
@@ -43,7 +47,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/cart",
-        element: <LoggedInProtectedRoute><Cart/></LoggedInProtectedRoute>,
+        element: <Cart />,
       },
       {
         path: "/track",
@@ -51,22 +55,44 @@ const router = createBrowserRouter([
       },
       {
         path: "/login",
-        element: <LoggedOutProtectedRoute><Login /></LoggedOutProtectedRoute>,
-
-
+        element: (
+          <LoggedOutProtectedRoute>
+            <Login />
+          </LoggedOutProtectedRoute>
+        ),
       },
       {
         path: "/signup",
-        element: <LoggedOutProtectedRoute><Signup /></LoggedOutProtectedRoute>,
+        element: (
+          <LoggedOutProtectedRoute>
+            <Signup />
+          </LoggedOutProtectedRoute>
+        ),
       },
       {
         path: "/orders",
-        element: <LoggedInProtectedRoute><Orders/></LoggedInProtectedRoute> 
+        element: (
+          <LoggedInProtectedRoute>
+            <Orders />
+          </LoggedInProtectedRoute>
+        ),
       },
       {
         path: "/order-placed/:orderId",
-        element: <LoggedInProtectedRoute><ThankYou  /></LoggedInProtectedRoute>
-      }
+        element: (
+          <LoggedInProtectedRoute>
+            <ThankYou />
+          </LoggedInProtectedRoute>
+        ),
+      },
+      {
+        path: "/profile",
+        element: (
+          <LoggedInProtectedRoute>
+            <Profile />
+          </LoggedInProtectedRoute>
+        ),
+      },
     ],
   },
 ]);

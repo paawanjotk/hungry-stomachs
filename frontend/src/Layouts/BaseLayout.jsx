@@ -9,10 +9,7 @@ const BaseLayout = ({ children }) => {
       <main className="flex-grow">
       {children}
       </main>
-      <Footer />
-     {/* add footer down */}
-     
-     
+      <Footer />     
     </div>
   );
 };

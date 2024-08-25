@@ -18,6 +18,16 @@ const userSchema = new Schema({
     type: [{ type: Schema.Types.ObjectId, ref: "Order" }],
     default: [],
   },
+  address: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  phone: {
+    type: String,
+    required: false,
+    default: "",
+  },
 });
 
 const User = model(USER_MODEL_NAME, userSchema);
@@ -30,6 +40,9 @@ const UserModel = {
     const user = await User.findOne({ email: userEmail });
     return user;
   },
+  updateUser: async (userId, update) => {
+    return await User.findByIdAndUpdate(userId, update, { new: true });
+  }
 };
 
 export default UserModel;

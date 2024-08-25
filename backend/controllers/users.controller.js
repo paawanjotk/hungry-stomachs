@@ -15,17 +15,20 @@ export const authenticateJwt = (req, res, next) => {
     const token = authHeader.split(" ")[1];
     jwt.verify(token, secret, async (err, user) => {
       if (err) {
+        console.log(err);
         return res.sendStatus(403);
       }
 
       const existingUser = await UserModel.getByEmail(user.email);
       if (!existingUser) {
+        console.log("User not found");
         return res.sendStatus(403);
       }
       req.user = existingUser;
       next();
     });
   } else {
+    console.log("No token provided");
     res.sendStatus(401);
   }
 };
@@ -97,6 +100,27 @@ const UserController = {
     return res.status(200).json({
       result: req.user,
     });
+  },
+  updateUser: async (req, res) => {
+    try {
+      const { name, email, address, phone } = req.body;
+      const updatedUser = await UserModel.updateUser(req.user._id, {
+        name,
+        email,
+        address,
+        phone,
+      });
+      return res.status(200).json({
+        result: updatedUser,
+        message: "User updated successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
   },
 };
 export default UserController;

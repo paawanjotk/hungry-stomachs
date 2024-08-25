@@ -12,6 +12,7 @@ export const loginUser = async (user) => {
     .then((res) => res);
 };
 export const getUser = async (token) => {
+
   return axios
     .get(`${process.env.REACT_APP_BACKEND_BASE_URL}/user`, {
         headers:{
@@ -20,3 +21,13 @@ export const getUser = async (token) => {
     })
     .then((res) => res.data);
 };
+export const updateUser = async (user) => {
+  const token = localStorage.getItem("token");
+  return axios
+    .put(`${process.env.REACT_APP_BACKEND_BASE_URL}/user`, user, {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
+    .then((res) => res.data);
+}

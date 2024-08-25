@@ -6,20 +6,22 @@ import {
   USER_MODEL_NAME,
 } from "../constants/models.js";
 
-const orderSchema = new Schema({
-  ph: String,
-  address: String,
-  total_price: Number,
-  name: String,
-  email: String,
-  orderItems: [{ type: Schema.Types.ObjectId, ref: ORDERITEM_MODEL_NAME }],
-  status: {
-    type: String,
-    enum: ["pending", "confirmed", "in-transit", "completed"],
-    default: "pending",
+const orderSchema = new Schema(
+  {
+    phone: String,
+    address: String,
+    total_price: Number,
+    orderItems: [{ type: Schema.Types.ObjectId, ref: ORDERITEM_MODEL_NAME }],
+    status: {
+      type: String,
+      enum: ["pending", "confirmed", "in-transit", "completed"],
+      default: "pending",
+    },
+    user: { type: Schema.Types.ObjectId, ref: USER_MODEL_NAME },
+    notes: String,
   },
-  user: { type: Schema.Types.ObjectId, ref: USER_MODEL_NAME },
-}, { timestamps: true });
+  { timestamps: true }
+);
 
 const Order = model(ORDER_MODEL_NAME, orderSchema);
 
@@ -41,11 +43,11 @@ const OrderModel = {
   getOrders: async (query) => {
     const orders = await Order.find(query)
       .populate({
-        path: 'orderItems',
+        path: "orderItems",
         populate: {
-          path: 'product',
-          model: PRODUCT_MODEL_NAME
-        }
+          path: "product",
+          model: PRODUCT_MODEL_NAME,
+        },
       })
       .exec();
     console.log(orders);

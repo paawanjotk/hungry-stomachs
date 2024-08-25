@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import LoadingSpinner from "./LoadingSpinner";
+import { useSelector } from "react-redux";
 export const LoggedInProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -13,7 +16,11 @@ export const LoggedInProtectedRoute = ({ children }) => {
     }
   }, [navigate]);
 
-  if (loading) {
+  if (user === null) {
+    return <Navigate to={"/login"} />;
+  }
+
+  if (loading || user === undefined) {
     return <LoadingSpinner />;
   }
 

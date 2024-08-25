@@ -3,9 +3,8 @@ import { useDispatch } from "react-redux";
 import { getUser } from "../http/users";
 import { setUser } from "../components/AuthSlice";
 
-const AuthWrapper = ({children}) => {
+const AuthWrapper = ({ children }) => {
   let dispatch = useDispatch();
-   
   useEffect(() => {
     (async () => {
       const token = localStorage.getItem("token");
@@ -13,15 +12,17 @@ const AuthWrapper = ({children}) => {
         // user is authenticated
         // dispatch an action to set the user
         try {
-            const res = await getUser(token);
-            dispatch(setUser(res.result));
-            
+          const { result } = await getUser(token);
+          
+          dispatch(setUser(result));
         } catch (error) {
-            localStorage.removeItem("token");
+          localStorage.removeItem("token");
+          dispatch(setUser(null));
         }
       }
     })();
   }, [dispatch]);
+
   return <>{children}</>;
 };
 
