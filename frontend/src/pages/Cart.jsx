@@ -19,10 +19,12 @@ const Cart = () => {
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
   const navigate = useNavigate();
-  if(user){
-    setAddress(user.address);
-    setPhone(user.phone);
-  }
+  useEffect(() => {
+    if (user) {
+      setAddress(user.address);
+      setPhone(user.phone);
+    }
+  }, [user]);
   const calcTotal = () => {
     let total = 0;
     for (let i = 0; i < fetchedItems.length; i++) {

@@ -50,7 +50,6 @@ const OrderModel = {
         },
       })
       .exec();
-    console.log(orders);
     return orders;
   },
 };

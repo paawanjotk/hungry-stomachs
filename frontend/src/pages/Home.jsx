@@ -11,7 +11,6 @@ function Home() {
     (async () => {
       try {
         const res = await getBestSellers();
-        console.log(res);
         setTopProducts(res);
       } catch (e) {
         console.log(e);
