@@ -21,6 +21,7 @@ import {
 } from "./components/ProtectedRoute";
 import ThankYou from "./pages/ThankYou";
 import Profile from "./pages/Profile";
+import ScrollToTop from "./components/ScrollToTop";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const router = createBrowserRouter([
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
     element: (
       <AuthWrapper>
         <BaseLayout>
+          <ScrollToTop/>
           <Outlet />
         </BaseLayout>
       </AuthWrapper>
