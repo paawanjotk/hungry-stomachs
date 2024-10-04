@@ -1,5 +1,6 @@
-import { config } from "dotenv";
-config();
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from "express";
 import CategoriesController from "./controllers/categories.controller.js";
 import ProductController from "./controllers/products.controller.js";

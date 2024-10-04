@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { USER_MODEL_NAME } from "../constants/models.js";
+import { ORDER_MODEL_NAME, USER_MODEL_NAME } from "../constants/models.js";
 const userSchema = new Schema({
   name: {
     type: String,
@@ -15,7 +15,7 @@ const userSchema = new Schema({
     required: true,
   },
   orders: {
-    type: [{ type: Schema.Types.ObjectId, ref: "Order" }],
+    type: [{ type: Schema.Types.ObjectId, ref: ORDER_MODEL_NAME }],
     default: [],
   },
   address: {

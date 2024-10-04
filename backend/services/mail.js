@@ -1,50 +1,51 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import nodemailer from "nodemailer";
+import { google } from "googleapis";
 
-// Create a transporter object using SMTP transport
+// OAuth2 configuration
+const oAuth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  "https://developers.google.com/oauthplayground" // Redirect URL
+);
 
-// Email options
-const mailOptions = {
-  from: process.env.EMAIL_USER, // sender address
-  subject: "Your order at Hungry Stomachs has been received.", // Subject line
-  text: (name, orderId) => `Hey ${name}, \n\n Your order Id is: ${orderId}. 
-\nUse it to track your order.`, // plain text body
-  html: (
-    name,
-    orderId
-  ) => `Hey ${name}, \n\n Your order Id is: <b>${orderId}</b>. 
-  \nUse it to track your order.`, // html body
-};
+// Set the credentials for the OAuth2 client
+oAuth2Client.setCredentials({
+  refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
+});
 
+// Create a transporter object using OAuth2 and accessToken
 export const sendMail = async ({ orderId, name, email }) => {
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_USER, // your Gmail account
-      pass: process.env.EMAIL_PASS,
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-      type: "OAuth2",
-    },
-  });
-  const res = new Promise((respect, disrespect) => {
-    transporter.sendMail(
-      {
-        to: email,
-        from: mailOptions.from,
-        subject: mailOptions.subject,
-        text: mailOptions.text(name, orderId),
-        html: mailOptions.html(name, orderId),
-      },
-      (error, info) => {
-        if (error) {
-          return disrespect(error);
-        }
-        respect(info);
-      }
-    );
-  });
-  return await res;
-};
+  try {
+    // Get the access token from the OAuth2 client
+    const accessToken = await oAuth2Client.getAccessToken();
 
-// Send the email
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        type: "OAuth2",
+        user: process.env.EMAIL_USER,
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+        accessToken: accessToken.token,
+      },
+    });
+
+    const mailOptions = {
+      to: email,
+      from: process.env.EMAIL_USER,
+      subject: "Your order at Hungry Stomachs has been received.",
+      text: `Hey ${name}, \n\n Your order Id is: ${orderId}. \nUse it to track your order.`,
+      html: `Hey ${name}, \n\n Your order Id is: <b>${orderId}</b>. \nUse it to track your order.`,
+    };
+
+    const res = await transporter.sendMail(mailOptions);
+    return res;
+
+  } catch (error) {
+    console.error("Error sending email: ", error);
+    throw new Error("Failed to send email");
+  }
+};

@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { FaSearch, FaShoppingBag } from "react-icons/fa";
 import { getBestSellers } from "../http/orders";
-import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
 
 function Home() {
