@@ -16,6 +16,7 @@ const Cart = () => {
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [currTotal, setCurrTotal] = useState(0);
   const [address, setAddress] = useState("");
+  const [PIN, setPIN] = useState("");
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const Cart = () => {
       setPhone(user.phone);
     }
   }, [user]);
+
   const calcTotal = () => {
     let total = 0;
     for (let i = 0; i < fetchedItems.length; i++) {
@@ -39,14 +41,22 @@ const Cart = () => {
     if (isSubmitLoading) return;
     try {
       setIsSubmitLoading(true);
-      const cart = { items: cartItems, address, phone, notes };
-      const res = await createOrder(cart, localStorage.getItem("token"));
-      alert("Order Id: " + res._id);
-      setLocalCart([]);
-      const newUrl = `/order-placed/${res._id}`;
-      window.location.replace(newUrl);
+      const cart = { items: cartItems, address, PIN, phone, notes, total: currTotal };
+      
+      // open ship page 
+      navigate("/ship", { state: { cart } });
+
+      //const res = await createOrder(cart, localStorage.getItem("token"));
+
+      // window.open(res.paymentLink, "_blank").focus();
+
+      //alert("Order Id: " + res._id);
+      // setLocalCart([]);
+      // const newUrl = `/order-placed/${res._id}`;
+      // window.location.replace(newUrl);
     } catch (e) {
-      alert("Error while placing the order");
+      // alert("Error while placing the order");
+      console.error(e);
     } finally {
       setIsSubmitLoading(false);
     }
@@ -184,6 +194,21 @@ const Cart = () => {
               />
             </div>
             <div className="flex flex-col">
+              <label htmlFor="address">PIN code (6#):</label>
+              <input
+                placeholder="In your heart"
+                className="rounded-md p-2 text-black"
+                value={PIN}
+                onChange={(e) => {
+                  setPIN(e.target.value);
+                }}
+                type="text"
+                id="PIN"
+                name="PIN"
+                required
+              />
+            </div>
+            <div className="flex flex-col">
               <label htmlFor="phone">Phone:</label>
               <input
                 placeholder="1234567890"
@@ -218,6 +243,7 @@ const Cart = () => {
               Confirm
             </button>
           </form>
+          <p className="text-darkBrand text-base md:text-lg">Shipping is free on orders above ₹2000</p>
         </div>
       )}
       {!user && (

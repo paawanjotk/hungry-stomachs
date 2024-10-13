@@ -22,6 +22,8 @@ import {
 import ThankYou from "./pages/ThankYou";
 import Profile from "./pages/Profile";
 import ScrollToTop from "./components/ScrollToTop";
+import PaymentProcessing from "./pages/PaymentProcessing";
+import Ship from "./pages/Ship";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const router = createBrowserRouter([
@@ -88,6 +90,14 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/orders/processing-payment/",
+        element:  <PaymentProcessing/>
+      },
+      {
+        path: "/order-cancelled",
+        element: <h1>Order Cancelled</h1>
+      },
+      {
         path: "/profile",
         element: (
           <LoggedInProtectedRoute>
@@ -95,6 +105,14 @@ const router = createBrowserRouter([
           </LoggedInProtectedRoute>
         ),
       },
+      {
+        path: "/ship",
+        element: (
+          <LoggedInProtectedRoute>
+          <Ship />
+          </LoggedInProtectedRoute>
+        )
+      }
     ],
   },
 ]);

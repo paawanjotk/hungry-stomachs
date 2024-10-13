@@ -61,6 +61,7 @@ const Orders = () => {
                   );
                 })}
               </div>
+              <p className="font-medium text-lg">Notes: {order.notes}</p> 
               <p className="font-medium text-lg">Order items total: ₹ {order.total_price}</p>
             </div>
           );
