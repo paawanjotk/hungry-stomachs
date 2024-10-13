@@ -54,7 +54,7 @@ const Ship = () => {
         Your Pretty Order Confirmation
       </h1>
       <h2 className="text-lg md:text-2xl font-medium">Your order details:</h2>
-      <div className="flex flex-col gap-5 w-[70%] md:w-[50%] bg-secondary p-5 border-2 border-primary">
+      <div className="flex flex-col gap-5 w-[90%] md:w-[90%] bg-secondary p-5 border-2 border-primary">
         <div className="flex flex-col gap-2">
           <h3 className="text-lg md:text-2xl font-medium">Items:</h3>
           <ul className="list-disc list-inside">
