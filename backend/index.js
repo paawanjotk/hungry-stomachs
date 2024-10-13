@@ -30,6 +30,7 @@ App.put("/products", ProductController.updateProduct);
 App.post("/orders", authenticateJwt, OrderController.createOrder);
 App.get("/orders/bestsellers", OrderController.getBestSellers);
 App.get("/orders/", authenticateJwt, OrderController.getOrders);
+App.get("/orders/processing-payment", OrderController.processPayment);
 App.get("/orders/:id", OrderController.getById);
 
 App.post("/sign-up", UserController.createUser);

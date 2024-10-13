@@ -10,6 +10,7 @@ const orderSchema = new Schema(
   {
     phone: String,
     address: String,
+    pincode: String,
     total_price: Number,
     orderItems: [{ type: Schema.Types.ObjectId, ref: ORDERITEM_MODEL_NAME }],
     status: {
@@ -19,6 +20,10 @@ const orderSchema = new Schema(
     },
     user: { type: Schema.Types.ObjectId, ref: USER_MODEL_NAME },
     notes: String,
+    payment_id: {
+      type: String,
+      default: null,
+    },
   },
   { timestamps: true }
 );

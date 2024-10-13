@@ -38,7 +38,7 @@ const OrderItemModel = {
           $sort: { totalQuantity: -1 }, // Sort by total quantity sold in descending order
         },
         {
-          $limit: 5, // Limit the result to top 5 products
+          $limit: 6, // Limit the result to top 5 products
         },
         {
           $lookup: {
