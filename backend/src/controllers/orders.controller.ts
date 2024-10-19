@@ -1,26 +1,36 @@
-import OrderItemModel from "../models/orderItem.models.js";
-import ProductModel from "../models/products.models.js";
-import orderModel from "../models/orders.models.js";
-import { sendMail } from "../services/mail.js";
-import { createPaymentLink, instance } from "../services/payment.js";
+import OrderItemModel from "../models/orderItem.models";
+import ProductModel from "../models/products.models";
+import orderModel from "../models/orders.models";
+import { sendMail } from "../services/mail";
+import { createPaymentLink } from "../services/payment";
 import { validatePaymentVerification } from "razorpay/dist/utils/razorpay-utils.js";
+import { Request, Response } from "express";
 
 const OrderController = {
-  getById: async (req, res) => {
+  getById: async (req: Request, res: Response): Promise<void> => {
     try {
       const result = await orderModel.getById(req.params.id);
-      return res.json({ result });
+      res.json({ result });
     } catch (e) {
-      return res.sendStatus(500);
+      res.sendStatus(500);
     }
   },
-  createOrder: async (req, res) => {
+  createOrder: async (req: Request, res: Response): Promise<void> => {
     const orderItems = await OrderItemModel.createMany(req.body.items);
+    const body = req.body as {
+      phone: string;
+      address: string;
+      PIN: string;
+      items: { _id: string; quantity: number }[];
+      notes: string;
+    };
 
     let total_price = 0;
     for (const element of req.body.items) {
       const prod = await ProductModel.getById(element._id);
-      total_price += prod.price * element.quantity;
+      if (prod && prod.price != null) {
+        total_price += prod.price * element.quantity;
+      }
     }
     if (
       req.body.address !== req.user.address ||
@@ -31,13 +41,13 @@ const OrderController = {
       await req.user.save();
     }
     const response = await orderModel.createOrder({
-      phone: req.body.phone,
-      address: req.body.address,
-      pincode: req.body.PIN,
+      phone: body.phone,
+      address: body.address,
+      pincode: body.PIN,
       total_price: total_price,
       orderItems: orderItems.map((item) => item._id),
       user: req.user._id,
-      notes: req.body.notes,
+      notes: body.notes,
     });
     try {
       const shortUrlObject = await createPaymentLink({
@@ -45,16 +55,15 @@ const OrderController = {
         customer_email: req.user.email,
         customer_name: req.user.name,
         customer_phone: req.body.phone,
-        orderId: response._id,
+        orderId: response._id.toString(),
       });
-      response.razorpay_payment_link_id = shortUrlObject.razorpay_payment_id;
       await response.save();
-      return res.json({
+      res.json({
         result: { ...response, paymentLink: shortUrlObject.short_url },
       });
     } catch (error) {
-      console.log(e);
-      return res.sendStatus(500);
+      console.log(error);
+      res.sendStatus(500);
     }
     // try {
     //   await sendMail({
@@ -67,51 +76,54 @@ const OrderController = {
     //   return res.sendStatus(500);
     // }
   },
-  getOrders: async (req, res) => {
+  getOrders: async (req: Request, res: Response): Promise<void> => {
     try {
-      return res.json({
+      res.json({
         result: await orderModel.getOrders({ user: req.user._id }),
       });
     } catch (error) {
-      return res.sendStatus(500);
+      res.sendStatus(500);
     }
   },
-  getBestSellers: async (req, res) => {
+  getBestSellers: async (req: Request, res: Response): Promise<void> => {
     try {
       const result = await OrderItemModel.getBestSellers();
-      return res.json({ result });
+      res.json({ result });
     } catch (e) {
-      return res.sendStatus(500);
+      res.sendStatus(500);
     }
   },
-  processPayment: async (req, res) => {
+  processPayment: async (req: Request, res: Response): Promise<void> => {
     try {
-      console.log("Processing payment ~ ", req.query);
       const {
         razorpay_payment_link_reference_id,
         razorpay_payment_link_id,
         razorpay_payment_id,
         razorpay_signature,
         razorpay_payment_link_status,
-      } = req.query; // Access directly from req.query
+      } = req.query as {
+        razorpay_payment_link_reference_id: string;
+        razorpay_payment_link_id: string;
+        razorpay_payment_id: string;
+        razorpay_signature: string;
+        razorpay_payment_link_status: string;
+      };
 
-      // Get the order by reference ID
       const order = await orderModel.getById(
         razorpay_payment_link_reference_id
       );
       if (!order) {
-        return res.sendStatus(404);
+        res.sendStatus(404);
+        return;
       }
       if (order.status !== "pending") {
-        return res.sendStatus(400);
+        res.sendStatus(400);
       }
       if (razorpay_payment_link_status !== "paid") {
-        return res
+        res
           .status(200)
           .json({ redirectUrl: process.env.CLIENT_URL + "/order-cancelled" });
       }
-
-      // Define the payment verification data
 
       const paymentData = {
         payment_link_id: razorpay_payment_link_id,
@@ -119,36 +131,43 @@ const OrderController = {
         payment_link_reference_id: razorpay_payment_link_reference_id,
         payment_link_status: razorpay_payment_link_status,
       };
-      // Verify the payment status
 
       try {
         validatePaymentVerification(
           paymentData,
           razorpay_signature,
-          instance.key_secret
+          process.env.RAZORPAY_KEY_SECRET || ""
         );
-        console.log("Payment verification successful");
 
-        // Update the order status to confirmed
         order.status = "confirmed";
         order.payment_id = razorpay_payment_id;
+
+        try {
+          await sendMail({
+            name: req.user.name,
+            email: req.user.email,
+            phone: req.user.phone,
+          });
+        } catch (e) {
+          console.error(e);
+        }
+
         await order.save();
 
-        // Send the success response
-        return res.status(200).json({
+        res.status(200).json({
           redirectUrl: process.env.CLIENT_URL + "/order-placed/" + order._id,
         });
       } catch (error) {
         console.error("Payment verification failed:", error);
         console.error("Payment verification failed");
         console.error(error);
-        return res.status(200).json({
+        res.status(200).json({
           redirectUrl: process.env.CLIENT_URL + "/order-cancelled",
         });
       }
     } catch (e) {
       console.error(e);
-      return res.status(200).json({
+      res.status(200).json({
         redirectUrl: process.env.CLIENT_URL + "/order-cancelled",
       });
     }

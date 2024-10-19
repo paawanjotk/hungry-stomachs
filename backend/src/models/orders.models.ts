@@ -1,12 +1,24 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 import {
   ORDERITEM_MODEL_NAME,
   ORDER_MODEL_NAME,
   PRODUCT_MODEL_NAME,
   USER_MODEL_NAME,
-} from "../constants/models.js";
+} from "../constants/models";
 
-const orderSchema = new Schema(
+export interface IOrder {
+  phone: string;
+  address: string;
+  pincode: string;
+  total_price: number;
+  orderItems: Types.ObjectId[];
+  status?: string;
+  user: Schema.Types.ObjectId;
+  notes: string;
+  payment_id?: string;
+}
+
+const orderSchema = new Schema<IOrder>(
   {
     phone: String,
     address: String,
@@ -28,10 +40,10 @@ const orderSchema = new Schema(
   { timestamps: true }
 );
 
-const Order = model(ORDER_MODEL_NAME, orderSchema);
+const Order = model<IOrder>(ORDER_MODEL_NAME, orderSchema);
 
 const OrderModel = {
-  getById: async (id) => {
+  getById: async (id: string) => {
     const order = await Order.findById(id).populate({
       path: "orderItems",
       populate: {
@@ -41,11 +53,11 @@ const OrderModel = {
     });
     return order;
   },
-  createOrder: async (order) => {
+  createOrder: async (order: IOrder) => {
     return await Order.create(order);
   },
 
-  getOrders: async (query) => {
+  getOrders: async (query: Partial<IOrder>) => {
     const orders = await Order.find(query)
       .populate({
         path: "orderItems",
@@ -60,38 +72,3 @@ const OrderModel = {
 };
 
 export default OrderModel;
-// order.findById('asdasd')
-/**
- *
- * {
- *  name:"arth",
- * ph: 'asdasd,
- * address: 'asdasd',
- * items: [
- * 'a123123asdasd',
- * 'asdasdasd2q3q23sad'
- * ]
- * }
- *
- *
- */
-
-// order.findById('asdasd').populate('OrderItem').populate('Product')
-/**
- *
- * {
- *  name:"arth",
- * ph: 'asdasd,
- * address: 'asdasd',
- * items: [
- * {
- *  productId: {
- * name: asd'asd},
- *  quantity: 2
- * }
- * 'asdasdasd2q3q23sad'
- * ]
- * }
- *
- *
- */

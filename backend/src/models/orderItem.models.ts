@@ -1,10 +1,12 @@
-import {
-  ORDERITEM_MODEL_NAME,
-  PRODUCT_MODEL_NAME,
-} from "../constants/models.js";
+import { ORDERITEM_MODEL_NAME, PRODUCT_MODEL_NAME } from "../constants/models";
 import { Schema, model } from "mongoose";
 
-const orderItemSchema = new Schema(
+export interface IOrderItem {
+  product: Schema.Types.ObjectId;
+  quantity: number;
+}
+
+const orderItemSchema = new Schema<IOrderItem>(
   {
     product: { type: Schema.Types.ObjectId, ref: PRODUCT_MODEL_NAME },
     quantity: Number,
@@ -12,16 +14,15 @@ const orderItemSchema = new Schema(
   { timestamps: true }
 );
 
-const OrderItem = model(ORDERITEM_MODEL_NAME, orderItemSchema);
+const OrderItem = model<IOrderItem>(ORDERITEM_MODEL_NAME, orderItemSchema);
 
 const OrderItemModel = {
-  createMany: async (items) => {
-    return await Promise.all(
+  createMany: async (
+    items: { _id: Schema.Types.ObjectId; quantity: number }[]
+  ) => {
+    return await OrderItem.insertMany(
       items.map((item) => {
-        return OrderItem.create({
-          product: item._id,
-          quantity: item.quantity,
-        });
+        return { product: item._id, quantity: item.quantity };
       })
     );
   },
@@ -30,7 +31,7 @@ const OrderItemModel = {
       const topProducts = await OrderItem.aggregate([
         {
           $group: {
-            _id: "$product", 
+            _id: "$product",
             totalQuantity: { $sum: "$quantity" }, // Sum up the quantity for each product
           },
         },

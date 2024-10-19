@@ -1,14 +1,14 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import CategoriesController from "./controllers/categories.controller.js";
-import ProductController from "./controllers/products.controller.js";
-import OrderController from "./controllers/orders.controller.js";
+import CategoriesController from "./controllers/categories.controller";
+import ProductController from "./controllers/products.controller";
+import OrderController from "./controllers/orders.controller";
 import mongoose from "mongoose";
 import UserController, {
   authenticateJwt,
-} from "./controllers/users.controller.js";
+} from "./controllers/users.controller";
 import cors from "cors";
 
 const App = express();
@@ -30,7 +30,11 @@ App.put("/products", ProductController.updateProduct);
 App.post("/orders", authenticateJwt, OrderController.createOrder);
 App.get("/orders/bestsellers", OrderController.getBestSellers);
 App.get("/orders/", authenticateJwt, OrderController.getOrders);
-App.get("/orders/processing-payment", OrderController.processPayment);
+App.get(
+  "/orders/processing-payment",
+  authenticateJwt,
+  OrderController.processPayment
+);
 App.get("/orders/:id", OrderController.getById);
 
 App.post("/sign-up", UserController.createUser);
@@ -40,7 +44,11 @@ App.put("/user", authenticateJwt, UserController.updateUser);
 
 const main = async () => {
   console.log({ connection_string: process.env.MONGO_DB_URL });
-  await mongoose.connect(process.env.MONGO_DB_URL).then(() => {
+  const mongoDbUrl = process.env.MONGO_DB_URL;
+  if (!mongoDbUrl) {
+    throw new Error("MONGO_DB_URL is not defined in the environment variables");
+  }
+  await mongoose.connect(mongoDbUrl).then(() => {
     console.log("Connected to DB");
   });
 };

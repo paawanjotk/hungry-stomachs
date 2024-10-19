@@ -1,6 +1,17 @@
 import { Schema, model } from "mongoose";
-import { ORDER_MODEL_NAME, USER_MODEL_NAME } from "../constants/models.js";
-const userSchema = new Schema({
+import { ORDER_MODEL_NAME, USER_MODEL_NAME } from "../constants/models";
+
+export interface IUser {
+  _id: Schema.Types.ObjectId;
+  name: string;
+  email: string;
+  password: string;
+  orders: Schema.Types.ObjectId[];
+  address?: string;
+  phone?: string;
+}
+
+const userSchema = new Schema<IUser>({
   name: {
     type: String,
     required: true,
@@ -30,19 +41,19 @@ const userSchema = new Schema({
   },
 });
 
-const User = model(USER_MODEL_NAME, userSchema);
+const User = model<IUser>(USER_MODEL_NAME, userSchema);
 
 const UserModel = {
-  createUser: async (user) => {
+  createUser: async (user: Omit<IUser, "orders">) => {
     return await User.create(user);
   },
-  getByEmail: async (userEmail) => {
+  getByEmail: async (userEmail: string) => {
     const user = await User.findOne({ email: userEmail });
     return user;
   },
-  updateUser: async (userId, update) => {
+  updateUser: async (userId: Schema.Types.ObjectId, update: Partial<IUser>) => {
     return await User.findByIdAndUpdate(userId, update, { new: true });
-  }
+  },
 };
 
 export default UserModel;
