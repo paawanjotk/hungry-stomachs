@@ -33,7 +33,11 @@ export const LoggedOutProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      navigate("/");
+      if (window.history.state && window.history.state.idx > 0) {
+        navigate(-1); // Navigates to the previous URL if it exists
+      } else {
+        navigate("/"); // Navigates to the home page if no previous history
+      }
     } else {
       setLoading(false);
     }
